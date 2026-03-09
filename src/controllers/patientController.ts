@@ -1,12 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import { PatientService } from '../services/patientService';
 import { AppError } from '../middlewares/errorHandler';
+import { JwtUtils } from '../utils/jwtUtils';
 
 export class PatientController {
   private readonly patientService: PatientService;
 
   constructor() {
     this.patientService = new PatientService();
+
+    // Bind context for Express routes
+    this.getAllPatients = this.getAllPatients.bind(this);
+    this.getPatientById = this.getPatientById.bind(this);
+    this.createPatient = this.createPatient.bind(this);
+    this.updatePatient = this.updatePatient.bind(this);
+    this.deletePatient = this.deletePatient.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+    this.getProfile = this.getProfile.bind(this);
   }
 
   // GET /api/patients
@@ -67,8 +78,12 @@ export class PatientController {
         antecedents,
       });
 
+      // Generate a token so the user is instantly logged in
+      const token = JwtUtils.generateToken({ id: patient.id, email: patient.email });
+
       res.status(201).json({
         success: true,
+        token,
         data: patient,
       });
     } catch (error) {
@@ -140,6 +155,20 @@ export class PatientController {
     }
   }
 
+  // POST /api/patients/logout
+  async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      // In a stateless JWT architecture, the client removes the token. 
+      // We return success to standardise the API.
+      res.status(200).json({
+        success: true,
+        message: 'Déconnexion réussie. Veuillez supprimer le token côté client.'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // GET /api/patients/me (pour récupérer le profil du patient connecté)
   async getProfile(req: Request, res: Response, next: NextFunction) {
     try {
@@ -154,5 +183,5 @@ export class PatientController {
     }
   }
 
- 
+
 }

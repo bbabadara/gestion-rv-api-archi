@@ -5,18 +5,16 @@ import { UpdatePatientDto } from '../dto/patient/UpdatePatientDto';
 import { PatientResponseDto } from '../dto/patient/PatientResponseDto';
 import { AntecedentResponseDto } from '../dto/antecedent/AntecedentResponseDto';
 import { DemandeRVResponseDto } from '../dto/demande-rv/DemandeRVResponseDto';
+import { PatientBuilder } from '../builder/PatientBuilder';
 
 export class PatientMapper {
   static toEntity(createPatientDto: CreatePatientDto): Patient {
-    const patient = new Patient();
-    patient.numero = createPatientDto.numero;
-    patient.nom = createPatientDto.nom;
-    patient.prenom = createPatientDto.prenom;
-    patient.telephone = createPatientDto.telephone;
-    patient.email = createPatientDto.email;
-    patient.adresse = createPatientDto.adresse;
-    patient.motDePasse = createPatientDto.motDePasse;
-    return patient;
+    return new PatientBuilder()
+      .setNumero(createPatientDto.numero)
+      .setIdentity(createPatientDto.prenom, createPatientDto.nom)
+      .setContact(createPatientDto.email, createPatientDto.telephone, createPatientDto.adresse)
+      .setCredentials(createPatientDto.motDePasse)
+      .build();
   }
 
   static toResponseDto(patient: Patient): PatientResponseDto {
@@ -28,7 +26,7 @@ export class PatientMapper {
     responseDto.telephone = patient.telephone;
     responseDto.email = patient.email;
     responseDto.adresse = patient.adresse;
-    
+
     if (patient.antecedents) {
       responseDto.antecedents = patient.antecedents.map(antecedent => {
         const antecedentDto = new AntecedentResponseDto();
@@ -38,7 +36,7 @@ export class PatientMapper {
         return antecedentDto;
       });
     }
-    
+
     if (patient.demandes) {
       responseDto.demandes = patient.demandes.map(demande => {
         const demandeDto = new DemandeRVResponseDto();
@@ -51,7 +49,7 @@ export class PatientMapper {
         return demandeDto;
       });
     }
-    
+
     return responseDto;
   }
 

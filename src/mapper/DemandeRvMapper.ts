@@ -7,23 +7,21 @@ import { PatientResponseDto } from '../dto/patient/PatientResponseDto';
 import { SpecialiteResponseDto } from '../dto/specialite/SpecialiteResponseDto';
 import { Patient } from '../entities/Patient';
 import { Specialite } from '../entities/Specialite';
+import { DemandeRVBuilder } from '../builder/DemandeRVBuilder';
 
 export class DemandeRvMapper {
   static toEntity(createDemandeRVDto: CreateDemandeRVDto): DemandeRV {
-    const demande = new DemandeRV();
-    demande.date = new Date(createDemandeRVDto.date);
-    demande.numero = createDemandeRVDto.numero;
-    demande.heure = createDemandeRVDto.heure;
-    
     const patient = new Patient();
     patient.id = createDemandeRVDto.patientId;
-    demande.patient = patient;
     
     const specialite = new Specialite();
     specialite.id = createDemandeRVDto.specialiteId;
-    demande.specialite = specialite;
     
-    return demande;
+    return new DemandeRVBuilder()
+      .setInfosSeance(new Date(createDemandeRVDto.date), createDemandeRVDto.heure, createDemandeRVDto.numero)
+      .SetPatient(patient)
+      .SetSpecialite(specialite)
+      .build();
   }
 
   static toResponseDto(demande: DemandeRV): DemandeRVResponseDto {

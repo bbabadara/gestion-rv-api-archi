@@ -8,7 +8,7 @@ const patientController = new PatientController();
 /**
  * Routes publiques
  */
-router.post('/patients/login' ,patientController.login);
+router.post('/patients/login', patientController.login);
 router.post('/patients', patientController.createPatient);
 
 /**
@@ -19,6 +19,7 @@ router.use('/patients', authenticate);
 /**
  * Routes protégées
  */
+router.post('/patients/logout', patientController.logout);
 router.get('/patients', patientController.getAllPatients);
 router.get('/patients/me', patientController.getProfile);
 router.get('/patients/:id', patientController.getPatientById);

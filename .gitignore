@@ -19,6 +19,7 @@ npm-debug.log*
 coverage/
 *.lcov
 AUDIT.md
+api.http
 
 # IDE
 .vscode/
