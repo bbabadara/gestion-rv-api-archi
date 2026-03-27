@@ -21,6 +21,7 @@ export const authenticate = async (
     const decoded: any = JwtUtils.verifyToken(token);
     
     // Ajouter l'ID du patient à la requête
+    if (!req.body) req.body = {};
     req.body.patientId = decoded.id;
     
     next();
