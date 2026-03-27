@@ -1,17 +1,17 @@
-describe('API Health Check', () => {
-  it('should validate test environment is working', () => {
+describe('Vérification de santé de l\'API', () => {
+  it('devrait valider que l\'environnement de test fonctionne', () => {
     expect(true).toBe(true);
   });
 
-  it('should confirm Jest is properly configured', () => {
+  it('devrait confirmer que Jest est correctement configuré', () => {
     const testData = { status: 'OK', count: 2 };
     expect(testData.status).toBe('OK');
     expect(testData.count).toBe(2);
   });
 });
 
-describe('DemandeRV Response Format Validation', () => {
-  it('should validate success response structure', () => {
+describe('Validation du format des réponses DemandeRV', () => {
+  it('devrait valider la structure d\'une réponse de succès', () => {
     const successResponse = {
       success: true,
       data: {
@@ -28,7 +28,7 @@ describe('DemandeRV Response Format Validation', () => {
     expect(successResponse.data.numero).toMatch(/^RV-/);
   });
 
-  it('should validate list response structure', () => {
+  it('devrait valider la structure d\'une réponse de liste', () => {
     const listResponse = {
       success: true,
       count: 3,
@@ -43,7 +43,7 @@ describe('DemandeRV Response Format Validation', () => {
     expect(listResponse.data.length).toBe(3);
   });
 
-  it('should validate filtered response structure', () => {
+  it('devrait valider la structure d\'une réponse filtrée', () => {
     const filteredResponse = {
       success: true,
       data: [{ id: '1', statutDemande: 'Valider' }],
@@ -55,8 +55,8 @@ describe('DemandeRV Response Format Validation', () => {
   });
 });
 
-describe('DemandeRV Model Validation', () => {
-  it('should validate demande with all fields', () => {
+describe('Validation du modèle DemandeRV', () => {
+  it('devrait valider une demande avec tous les champs', () => {
     const demande = {
       id: 'uuid-123',
       numero: 'RV-001',
@@ -76,7 +76,7 @@ describe('DemandeRV Model Validation', () => {
     expect(demande.statutRV).toBeDefined();
   });
 
-  it('should validate demande status transitions', () => {
+  it('devrait valider les transitions de statut', () => {
     const validTransitions = [
       { from: 'En attente', to: 'Valider' },
       { from: 'En attente', to: 'Refuser' },
@@ -92,8 +92,8 @@ describe('DemandeRV Model Validation', () => {
   });
 });
 
-describe('Specialite Model Validation', () => {
-  it('should validate specialite model structure', () => {
+describe('Validation du modèle Specialite', () => {
+  it('devrait valider la structure d\'une specialite', () => {
     const specialites = [
       { id: '1', code: 'GENERAL', nom: 'Généraliste' },
       { id: '2', code: 'CARDIO', nom: 'Cardiologie' },
@@ -108,8 +108,8 @@ describe('Specialite Model Validation', () => {
   });
 });
 
-describe('Date and Time Validation', () => {
-  it('should validate date format YYYY-MM-DD', () => {
+describe('Validation des dates et heures', () => {
+  it('devrait valider le format de date YYYY-MM-DD', () => {
     const validDates = ['2026-04-15', '2026-12-31', '2026-01-01'];
 
     validDates.forEach(date => {
@@ -119,7 +119,7 @@ describe('Date and Time Validation', () => {
     });
   });
 
-  it('should validate time format HH:MM', () => {
+  it('devrait valider le format d\'heure HH:MM', () => {
     const validTimes = ['08:00', '12:30', '18:45', '23:59'];
 
     validTimes.forEach(time => {
@@ -127,7 +127,7 @@ describe('Date and Time Validation', () => {
     });
   });
 
-  it('should validate time slots are within working hours', () => {
+  it('devrait valider que les créneaux sont dans les heures de travail', () => {
     const workingHours = { start: 8, end: 18 };
     const testSlots = ['08:00', '10:30', '17:45'];
 
@@ -139,8 +139,8 @@ describe('Date and Time Validation', () => {
   });
 });
 
-describe('Statut Filtering Logic', () => {
-  it('should filter demandes by En attente status', () => {
+describe('Logique de filtrage par statut', () => {
+  it('devrait filtrer les demandes par statut En attente', () => {
     const demandes = [
       { id: '1', statutDemande: 'En attente' },
       { id: '2', statutDemande: 'Valider' },
@@ -152,7 +152,7 @@ describe('Statut Filtering Logic', () => {
     expect(filtered.every(d => d.statutDemande === 'En attente')).toBe(true);
   });
 
-  it('should filter demandes by Valider status', () => {
+  it('devrait filtrer les demandes par statut Valider', () => {
     const demandes = [
       { id: '1', statutDemande: 'En attente' },
       { id: '2', statutDemande: 'Valider' },
@@ -163,7 +163,7 @@ describe('Statut Filtering Logic', () => {
     expect(filtered.length).toBe(2);
   });
 
-  it('should filter RV by En cours status', () => {
+  it('devrait filtrer les RV par statut En cours', () => {
     const rendezvous = [
       { id: '1', statutRV: 'En cours' },
       { id: '2', statutRV: 'Terminer' },
@@ -174,7 +174,7 @@ describe('Statut Filtering Logic', () => {
     expect(filtered.length).toBe(2);
   });
 
-  it('should show only validated RV to patient', () => {
+  it('devrait afficher uniquement les RV validés au patient', () => {
     const demandes = [
       { id: '1', statutDemande: 'En attente', statutRV: null },
       { id: '2', statutDemande: 'Valider', statutRV: 'En cours' },
@@ -189,8 +189,8 @@ describe('Statut Filtering Logic', () => {
   });
 });
 
-describe('HTTP Status Codes for DemandeRV', () => {
-  it('should validate status codes mapping', () => {
+describe('Codes de statut HTTP pour DemandeRV', () => {
+  it('devrait valider le mapping des codes de statut', () => {
     const statusCodes = {
       GET_LIST: 200,
       GET_ONE: 200,
@@ -209,7 +209,7 @@ describe('HTTP Status Codes for DemandeRV', () => {
 });
 
 describe('Pagination', () => {
-  it('should validate pagination response structure', () => {
+  it('devrait valider la structure de réponse paginée', () => {
     const paginatedResponse = {
       success: true,
       data: [{ id: '1' }, { id: '2' }],
@@ -228,7 +228,7 @@ describe('Pagination', () => {
     expect(paginatedResponse.pagination.totalPages).toBe(3);
   });
 
-  it('should calculate total pages correctly', () => {
+  it('devrait calculer correctement le nombre total de pages', () => {
     const total = 25;
     const limit = 10;
     const totalPages = Math.ceil(total / limit);

@@ -1,17 +1,17 @@
-describe('API Health Check', () => {
-  it('should validate test environment is working', () => {
+describe('Vérification de santé de l\'API', () => {
+  it('devrait valider que l\'environnement de test fonctionne', () => {
     expect(true).toBe(true);
   });
 
-  it('should confirm Jest is properly configured', () => {
+  it('devrait confirmer que Jest est correctement configuré', () => {
     const testData = { status: 'OK', count: 2 };
     expect(testData.status).toBe('OK');
     expect(testData.count).toBe(2);
   });
 });
 
-describe('API Response Format Validation', () => {
-  it('should validate success response structure', () => {
+describe('Validation du format des réponses API', () => {
+  it('devrait valider la structure d\'une réponse de succès', () => {
     const successResponse = {
       success: true,
       data: { id: 'test-id', nom: 'Test' },
@@ -20,7 +20,7 @@ describe('API Response Format Validation', () => {
     expect(successResponse.data).toBeDefined();
   });
 
-  it('should validate error response structure', () => {
+  it('devrait valider la structure d\'une réponse d\'erreur', () => {
     const errorResponse = {
       success: false,
       message: 'Erreur',
@@ -29,7 +29,7 @@ describe('API Response Format Validation', () => {
     expect(errorResponse.message).toBeDefined();
   });
 
-  it('should validate list response structure', () => {
+  it('devrait valider la structure d\'une réponse de liste', () => {
     const listResponse = {
       success: true,
       count: 5,
@@ -41,22 +41,22 @@ describe('API Response Format Validation', () => {
   });
 });
 
-describe('JWT Token Validation', () => {
-  it('should validate token format', () => {
+describe('Validation des tokens JWT', () => {
+  it('devrait valider le format d\'un token', () => {
     const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     expect(mockToken).toMatch(/^eyJ/);
     expect(mockToken.split('.').length).toBe(3);
   });
 
-  it('should validate decoded payload structure', () => {
+  it('devrait valider la structure du payload décodé', () => {
     const decodedPayload = { id: 'user-123', email: 'test@example.com' };
     expect(decodedPayload.id).toBeDefined();
     expect(decodedPayload.email).toBeDefined();
   });
 });
 
-describe('HTTP Status Codes', () => {
-  it('should validate common status codes', () => {
+describe('Codes de statut HTTP', () => {
+  it('devrait valider les codes de statut HTTP courants', () => {
     const codes = {
       OK: 200,
       CREATED: 201,
@@ -74,8 +74,8 @@ describe('HTTP Status Codes', () => {
   });
 });
 
-describe('Data Models', () => {
-  it('should validate Patient model structure', () => {
+describe('Modèles de données', () => {
+  it('devrait valider la structure du modèle Patient', () => {
     const patient = {
       id: 'uuid-123',
       numero: 'PAT-001',
@@ -91,7 +91,7 @@ describe('Data Models', () => {
     expect(patient.email).toContain('@');
   });
 
-  it('should validate DemandeRV model structure', () => {
+  it('devrait valider la structure du modèle DemandeRV', () => {
     const demande = {
       id: 'demande-uuid',
       numero: 'RV-001',
@@ -107,7 +107,7 @@ describe('Data Models', () => {
     expect(demande.statutRV).toBeDefined();
   });
 
-  it('should validate Specialite model structure', () => {
+  it('devrait valider la structure du modèle Specialite', () => {
     const specialite = {
       id: 'spec-uuid',
       code: 'CARDIO',
@@ -120,15 +120,15 @@ describe('Data Models', () => {
   });
 });
 
-describe('Enum Values', () => {
-  it('should validate StatutDemande values', () => {
+describe('Valeurs des énumérations', () => {
+  it('devrait valider les valeurs de StatutDemande', () => {
     const statutDemande = ['En attente', 'Valider', 'Refuser'];
     expect(statutDemande).toContain('En attente');
     expect(statutDemande).toContain('Valider');
     expect(statutDemande).toContain('Refuser');
   });
 
-  it('should validate StatutRV values', () => {
+  it('devrait valider les valeurs de StatutRV', () => {
     const statutRV = ['En cours', 'Terminer', 'Annuler'];
     expect(statutRV).toContain('En cours');
     expect(statutRV).toContain('Terminer');
@@ -136,8 +136,8 @@ describe('Enum Values', () => {
   });
 });
 
-describe('Validation Rules', () => {
-  it('should validate email format', () => {
+describe('Règles de validation', () => {
+  it('devrait valider le format d\'un email', () => {
     const validEmails = ['test@example.com', 'user@domain.org'];
     const invalidEmails = ['invalid', 'no@', '@nodomain'];
 
@@ -150,26 +150,26 @@ describe('Validation Rules', () => {
     });
   });
 
-  it('should validate phone format', () => {
+  it('devrait valider le format d\'un numéro de téléphone', () => {
     const validPhones = ['0612345678', '+33612345678'];
     validPhones.forEach(phone => {
       expect(phone.replace(/\s/g, '')).toMatch(/^\+?[0-9]{10,14}$/);
     });
   });
 
-  it('should validate date format', () => {
+  it('devrait valider le format d\'une date', () => {
     const validDate = '2026-04-15';
     expect(validDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
-  it('should validate time format', () => {
+  it('devrait valider le format d\'une heure', () => {
     const validTime = '14:30';
     expect(validTime).toMatch(/^([01]\d|2[0-3]):([0-5]\d)$/);
   });
 });
 
-describe('Tag Version Format', () => {
-  it('should validate vX.Y.Z format', () => {
+describe('Format des tags de version', () => {
+  it('devrait valider le format vX.Y.Z', () => {
     const validTags = ['v1.0.0', 'v2.1.3', 'v10.20.30'];
     const invalidTags = ['1.0.0', 'v1.0', 'latest', 'v1.0.0.0'];
 
