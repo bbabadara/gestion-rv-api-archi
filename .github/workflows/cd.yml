@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Deploy to Production
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -31,8 +31,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "22"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -42,8 +42,8 @@ jobs:
 
       - name: Run database migrations (Production)
         run: |
-          echo "Exécution des migrations de base de données..."
-          echo "[SIMULATION] Migrations terminées avec succès"
+          echo "Execution des migrations de base de donnees..."
+          echo "[SIMULATION] Migrations terminees avec succes"
 
       - name: Deploy to production server (Simulation)
         run: |
@@ -51,18 +51,18 @@ jobs:
           echo "============================================"
           echo "  DEPLOIEMENT DE LA VERSION ${{ steps.version.outputs.VERSION }} EN PRODUCTION"
           echo "============================================"
-          echo "[SIMULATION] Fichiers déployés sur le serveur de production"
-          echo "[SIMULATION] Configuration du serveur mise à jour"
-          echo "[SIMULATION] Services redémarrés"
-          echo "[SIMULATION] Vérification de la santé de l'application..."
-          echo "[SIMULATION] Deploiement terminé avec succes!"
+          echo "[SIMULATION] Fichiers deployes sur le serveur de production"
+          echo "[SIMULATION] Configuration du serveur mise a jour"
+          echo "[SIMULATION] Services redemarris"
+          echo "[SIMULATION] Verification de la sante de l'application..."
+          echo "[SIMULATION] Deploiement termine avec succes!"
           echo "============================================"
 
       - name: Verify deployment
         run: |
-          echo "Vérification du déploiement..."
-          echo "[SIMULATION] Endpoint santé: OK"
-          echo "[SIMULATION] Connexions base de données: OK"
+          echo "Verification du deploiement..."
+          echo "[SIMULATION] Endpoint sante: OK"
+          echo "[SIMULATION] Connexions base de donnees: OK"
           echo "[SIMULATION] Tous les services sont operationnels"
 
       - name: Create deployment summary
@@ -74,4 +74,4 @@ jobs:
           echo "| Version | ${{ steps.version.outputs.VERSION }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| Date | $(date -u '+%Y-%m-%d %H:%M:%S UTC') |" >> $GITHUB_STEP_SUMMARY
-          echo "| Statut | Deployé |" >> $GITHUB_STEP_SUMMARY
+          echo "| Statut | Deploye |" >> $GITHUB_STEP_SUMMARY
