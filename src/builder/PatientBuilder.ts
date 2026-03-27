@@ -11,7 +11,7 @@ export class PatientBuilder {
 
   public reset(): this {
     this.patient = new Patient();
-    this.patient.antecedents = []; // Initialisation pour éviter les undefined
+    this.patient.antecedents = [];
     this.patient.demandes = [];
     return this;
   }
@@ -44,12 +44,11 @@ export class PatientBuilder {
     return this;
   }
 
-  /**
-   * Retourne l'entité finale prête à être sauvegardée par le Repository
-   */
+  // Retourne l'entité finale prête à être sauvegardée par le Repository
+   
   public build(): Patient {
     const result = this.patient;
-    this.reset(); // Optionnel : prépare le builder pour une nouvelle utilisation
+    this.reset(); 
     return result;
   }
 }

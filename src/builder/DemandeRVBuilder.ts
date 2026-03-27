@@ -14,7 +14,7 @@ export class DemandeRVBuilder {
 
   public reset(): this {
     this.demande = new DemandeRV();
-    // Valeurs par défaut conformes aux définitions de l'entité
+    // Valeurs par défaut 
     this.demande.statutRV = StatutRV.EN_COURS;
     this.demande.statutDemande = StatutDemande.EN_ATTENTE;
     return this;

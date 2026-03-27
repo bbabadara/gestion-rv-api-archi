@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PatientService } from '../services/patientService';
+import { PatientService, invalidatePatientToken } from '../services/patientService';
 import { AppError } from '../middlewares/errorHandler';
 import { JwtUtils } from '../utils/jwtUtils';
 
@@ -9,7 +9,6 @@ export class PatientController {
   constructor() {
     this.patientService = new PatientService();
 
-    // Bind context for Express routes
     this.getAllPatients = this.getAllPatients.bind(this);
     this.getPatientById = this.getPatientById.bind(this);
     this.createPatient = this.createPatient.bind(this);
@@ -121,10 +120,18 @@ export class PatientController {
     try {
       const { id } = req.params;
       const patientId = Array.isArray(id) ? id[0] : id;
+      const authHeader = req.headers.authorization;
+      
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1];
+        invalidatePatientToken(token);
+        JwtUtils.blacklistToken(token);
+      }
+      
       await this.patientService.deletePatient(patientId);
-      res.status(204).json({
+      res.status(200).json({
         success: true,
-        data: null,
+        message: 'Compte supprimé avec succès. Tous les tokens ont été invalidés.',
       });
     } catch (error) {
       next(error);
@@ -158,11 +165,16 @@ export class PatientController {
   // POST /api/patients/logout
   async logout(req: Request, res: Response, next: NextFunction) {
     try {
-      // In a stateless JWT architecture, the client removes the token. 
-      // We return success to standardise the API.
+      const authHeader = req.headers.authorization;
+      
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1];
+        JwtUtils.blacklistToken(token);
+      }
+      
       res.status(200).json({
         success: true,
-        message: 'Déconnexion réussie. Veuillez supprimer le token côté client.'
+        message: 'Déconnexion réussie. Le token a été invalidée.'
       });
     } catch (error) {
       next(error);

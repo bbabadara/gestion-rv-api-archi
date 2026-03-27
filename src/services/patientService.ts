@@ -6,6 +6,19 @@ import { v4 as uuid } from 'uuid';
 import { JwtUtils } from '../utils/jwtUtils';
 import { PatientRepository } from '../repositories/PatientRepository';
 
+const INVALIDATED_TOKENS = new Set<string>();
+
+export function invalidatePatientToken(token: string): void {
+  INVALIDATED_TOKENS.add(token);
+  setTimeout(() => {
+    INVALIDATED_TOKENS.delete(token);
+  }, 7 * 24 * 60 * 60 * 1000);
+}
+
+export function isPatientTokenInvalidated(token: string): boolean {
+  return INVALIDATED_TOKENS.has(token);
+}
+
 export class PatientService {
   private readonly patientRepository: IPatientRepository;
   constructor() {
